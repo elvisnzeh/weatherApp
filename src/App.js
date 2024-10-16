@@ -7,7 +7,7 @@ function App() {
     name: "London",
     humidity: 10,
     speed: 2,
-    image: '/Images/clear.webp'
+    Image: '/Images/clear.webp'
   });
 
   const [name, setName] = useState('');
@@ -18,33 +18,26 @@ function App() {
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=dea6f3853e83ac904d4f59475cb5035f&units=metric`;
       axios.get(apiUrl)
         .then(res => {
-          let imagepath = '';
-          if (res.data.weather[0].main === "Clouds") {
-            imagepath = '/Images/cloud.png';
-          } else if (res.data.weather[0].main === "Clear") {
-            imagepath = '/Images/clear.webp';
+          let imagePath = '';
+          if (res.data.weather[0].main === "cloud") {
+            imagePath = '/Images/cloud.png';
+          } else if (res.data.weather[0].main === "clear") {
+            imagePath = 'Images/clear.webp';
           } else if (res.data.weather[0].main === "Rain") {
-            imagepath = '/Images/rainnn.jpg';
+            imagePath = 'Images/rainnn.jpg';
           } else if (res.data.weather[0].main === "Drizzle") {
-            imagepath = '/Images/drizzle.webp';
+            imagePath = 'Images/drizzle.webp';
           } else if (res.data.weather[0].main === "Mist") {
-            imagepath = '/Images/mist.png';
+            imagePath = 'Images/mist.png';
           } else {
-            imagepath = '/Images/cloud.png';
+            imagePath = 'Images/cloud.png';
           }
 
-          setData({
-            ...data,
-            celcius: res.data.main.temp,
-            name: res.data.name,
-            humidity: res.data.main.humidity,
-            speed: res.data.wind.speed,
-            image: imagepath
-          });
+          setData({ ...data, celcius: res.data.main.temp, name: res.data.name, humidity: res.data.main.humidity, speed: res.data.wind.speed, image: imagePath });
           setError('');
         })
         .catch(err => {
-          if (err.response && err.response.status === 404) {
+          if (err.response.status === 404) {
             setError("Invalid city name");
           } else {
             setError('');
@@ -54,57 +47,42 @@ function App() {
   };
 
   return (
-    <div className="App flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
-      <div className="container max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6">
-        <div className="weather">
-          {/* Search input */}
-          <div className="search flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Enter city name"
-              className="flex-grow border border-gray-300 rounded-lg p-2"
-              onChange={e => setName(e.target.value)}
+    <div className="flex items-center justify-center min-h-screen bg-blue-300">
+      <div className="w-full max-w-md p-6 bg-gradient-to-r from-blue-700 to-blue-900 text-white rounded-lg shadow-lg text-center">
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-4">
+            <input 
+              type="text" 
+              placeholder="Enter city name" 
+              className="w-full py-3 px-6 text-lg bg-blue-200 text-black rounded-full border border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+              onChange={(e) => setName(e.target.value)} 
             />
-            <button
-              className="bg-blue-500 p-2 rounded-lg"
-              onClick={handleClick}
-            >
-              <img src='/Images/search.png' alt="Search" className="h-6" />
+            <button 
+              className="ml-4 p-4 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center w-16 h-16" 
+              onClick={handleClick}>
+              <img src="/Images/search.png" alt="Search" className="w-8" />
             </button>
           </div>
-
-          {/* Error message */}
-          {error && (
-            <div className="error text-red-500 text-sm">
-              <p>{error}</p>
+          {error && <p className="text-red-500 text-left">{error}</p>}
+        </div>
+        <div className="winfo">
+          <img src={data.image} alt="Weather icon" className="w-24 mx-auto mb-4" />
+          <h1 className="text-6xl font-bold">{Math.round(data.celcius)}°C</h1>
+          <h2 className="text-3xl mt-2">{data.name}</h2>
+        </div>
+        <div className="mt-8 flex justify-around">
+          <div className="flex items-center">
+            <img src="/Images/humidity.jpg" alt="Humidity icon" className="w-12 mr-2" />
+            <div>
+              <p className="text-lg font-bold">{Math.round(data.humidity)}%</p>
+              <p>Humidity</p>
             </div>
-          )}
-
-          {/* Weather info */}
-          <div className="winfo text-center mt-6">
-            <img src={data.image} alt="Weather icon" className="icon mx-auto h-20" />
-            <h1 className="text-4xl font-bold">{Math.round(data.celcius)}°C</h1>
-            <h2 className="text-2xl text-gray-700">{data.name}</h2>
-
-            {/* Details (humidity and wind) */}
-            <div className="details flex justify-between mt-4">
-              {/* Humidity */}
-              <div className="col flex flex-col items-center">
-                <img src='/Images/humidity.jpg' alt="Humidity" className="h-12" />
-                <div className="humidity text-sm">
-                  <p>{Math.round(data.humidity)}%</p>
-                  <p>Humidity</p>
-                </div>
-              </div>
-
-              {/* Wind */}
-              <div className="col flex flex-col items-center">
-                <img src='/Images/wind.png' alt="Wind" className="h-12" />
-                <div className="wind text-sm">
-                  <p>{Math.round(data.speed)} km/h</p>
-                  <p>Wind</p>
-                </div>
-              </div>
+          </div>
+          <div className="flex items-center">
+            <img src="/Images/wind.png" alt="Wind icon" className="w-12 mr-2" />
+            <div>
+              <p className="text-lg font-bold">{Math.round(data.speed)}km/h</p>
+              <p>Wind</p>
             </div>
           </div>
         </div>
