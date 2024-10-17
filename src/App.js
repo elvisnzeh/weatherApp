@@ -7,7 +7,7 @@ function App() {
     name: "London",
     humidity: 10,
     speed: 2,
-    Image: '/Images/clear.webp'
+    Image: '/images/clear.webp'
   });
 
   const [name, setName] = useState('');
@@ -20,17 +20,17 @@ function App() {
         .then(res => {
           let imagePath = '';
           if (res.data.weather[0].main === "cloud") {
-            imagePath = '/Images/cloud.png';
+            imagePath = '/images/cloud.png';
           } else if (res.data.weather[0].main === "clear") {
-            imagePath = 'Images/clear.webp';
+            imagePath = 'images/clear.webp';
           } else if (res.data.weather[0].main === "Rain") {
-            imagePath = 'Images/rainnn.jpg';
+            imagePath = 'images/rainnn.jpg';
           } else if (res.data.weather[0].main === "Drizzle") {
-            imagePath = 'Images/drizzle.webp';
+            imagePath = 'images/drizzle.webp';
           } else if (res.data.weather[0].main === "Mist") {
-            imagePath = 'Images/mist.png';
+            imagePath = 'images/mist.png';
           } else {
-            imagePath = 'Images/cloud.png';
+            imagePath = 'images/cloud.png';
           }
 
           setData({ ...data, celcius: res.data.main.temp, name: res.data.name, humidity: res.data.main.humidity, speed: res.data.wind.speed, image: imagePath });
@@ -60,7 +60,7 @@ function App() {
             <button 
               className="ml-4 p-4 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center w-16 h-16" 
               onClick={handleClick}>
-              <img src="/Images/search.png" alt="Search" className="w-8" />
+              <img src="/images/search.png" alt="Search" className="w-8" />
             </button>
           </div>
           {error && <p className="text-red-500 text-left">{error}</p>}
@@ -72,14 +72,14 @@ function App() {
         </div>
         <div className="mt-8 flex justify-around">
           <div className="flex items-center">
-            <img src="/Images/humidity.jpg" alt="Humidity icon" className="w-12 mr-2" />
+            <img src="/images/humidity.jpg" alt="Humidity icon" className="w-12 mr-2" />
             <div>
               <p className="text-lg font-bold">{Math.round(data.humidity)}%</p>
               <p>Humidity</p>
             </div>
           </div>
           <div className="flex items-center">
-            <img src="/Images/wind.png" alt="Wind icon" className="w-12 mr-2" />
+            <img src="/images/wind.png" alt="Wind icon" className="w-12 mr-2" />
             <div>
               <p className="text-lg font-bold">{Math.round(data.speed)}km/h</p>
               <p>Wind</p>
